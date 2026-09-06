@@ -22,6 +22,19 @@ import sklearn.pipeline
 import sklearn.ensemble
 import sklearn.compose
 import sklearn.preprocessing
+
+# Alias sklearn internal loss module for cross-platform unpickling
+try:
+    import sklearn._loss
+    import sklearn._loss._loss as _loss_cython
+    for _attr in dir(sklearn._loss):
+        if not hasattr(_loss_cython, _attr):
+            setattr(_loss_cython, _attr, getattr(sklearn._loss, _attr))
+    sys.modules["_loss"] = _loss_cython
+    sys.modules["sklearn.ensemble._gb_losses"] = _loss_cython
+except Exception:
+    pass
+
 import joblib
 import pandas as pd
 import streamlit as st
