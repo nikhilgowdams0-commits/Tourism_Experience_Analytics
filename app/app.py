@@ -2,12 +2,13 @@ import os
 import textwrap
 
 import numpy as np
-try:
-    import numpy.core as _core
-    np.__dict__["core"] = _core
-    np.core = _core
-except Exception:
-    pass
+
+# Remove 'core' from numpy.__all__ to prevent Python 3.14 exec("from numpy import *") recursion in scipy
+if hasattr(np, "__all__") and "core" in np.__all__:
+    try:
+        np.__all__.remove("core")
+    except Exception:
+        pass
 
 import scipy
 import sklearn
