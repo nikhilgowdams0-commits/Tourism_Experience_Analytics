@@ -1,5 +1,22 @@
 import os
+import sys
 import textwrap
+
+# ── Cross-version unpickling compatibility bridge (NumPy 1.x <-> 2.x) ──
+try:
+    import numpy as _np
+    if not hasattr(_np, "_core"):
+        import numpy.core as _core
+        sys.modules["numpy._core"] = _core
+        sys.modules["numpy._core.multiarray"] = _core.multiarray
+        sys.modules["numpy._core.umath"] = _core.umath
+    else:
+        if "numpy.core" not in sys.modules and hasattr(_np, "_core"):
+            sys.modules["numpy.core"] = _np._core
+            sys.modules["numpy.core.multiarray"] = _np._core.multiarray
+            sys.modules["numpy.core.umath"] = _np._core.umath
+except Exception:
+    pass
 
 import altair as alt
 import joblib
