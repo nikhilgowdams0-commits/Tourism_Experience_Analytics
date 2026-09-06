@@ -18,6 +18,16 @@ try:
 except Exception:
     pass
 
+# ── Scikit-learn Cython _loss unpickling bridge (for Linux cloud compatibility) ──
+try:
+    import sklearn._loss
+    import sklearn._loss._loss as _cy_loss
+    sys.modules["_loss"] = _cy_loss
+    import sklearn._loss.loss as _py_loss
+    sys.modules["_loss.loss"] = _py_loss
+except Exception:
+    pass
+
 import altair as alt
 import joblib
 import numpy as np
