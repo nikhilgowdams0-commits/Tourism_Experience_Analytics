@@ -1,9 +1,22 @@
 import os
 import textwrap
 
+import numpy as np
+try:
+    import numpy.core as _core
+    np.__dict__["core"] = _core
+    np.core = _core
+except Exception:
+    pass
+
+import scipy
+import sklearn
+import sklearn.pipeline
+import sklearn.ensemble
+import sklearn.compose
+import sklearn.preprocessing
 import altair as alt
 import joblib
-import numpy as np
 import pandas as pd
 import streamlit as st
 
