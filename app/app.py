@@ -1,9 +1,28 @@
-
 import os
+import sys
 from html import escape
 
-import joblib
 import numpy as np
+
+# Prevent Python 3.14 recursion bug in numpy/scipy
+if hasattr(np, "__all__"):
+    np.__all__ = [x for x in np.__all__ if x != "core"]
+try:
+    import numpy._core as _core
+    sys.modules["numpy.core"] = _core
+    sys.modules["numpy.core.multiarray"] = getattr(_core, "multiarray", _core)
+    sys.modules["numpy.core._multiarray_umath"] = getattr(_core, "_multiarray_umath", _core)
+    setattr(np, "core", _core)
+except Exception:
+    pass
+
+import scipy
+import sklearn
+import sklearn.pipeline
+import sklearn.ensemble
+import sklearn.compose
+import sklearn.preprocessing
+import joblib
 import pandas as pd
 import streamlit as st
 import altair as alt
